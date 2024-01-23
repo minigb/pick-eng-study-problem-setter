@@ -36,7 +36,7 @@ def main():
     time.sleep(2)
     
     # Print result
-    print("Next setter:", random_pick, '\U0001F389') # print out with emoji
+    print("Next setter:", random_pick, '\U0001F389') # print with emoji
     time.sleep(1)
 
     
