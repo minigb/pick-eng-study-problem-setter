@@ -29,7 +29,7 @@ def main():
     random.shuffle(bag)
     random_pick = random.choice(bag)
     
-    # Hold on for a while for dramatic effect XD
+    # Hold on for a while for suspense XD
     for i in range(2):
         time.sleep(0.8)
         print('.')
