@@ -1,9 +1,10 @@
 import pandas as pd
+import numpy as np
 import datetime
 
 
-today = datetime.date.today()
-print(today)
+TODAY = datetime.date.today()
+START_DATE = '2023-07-04'
 
 def main():
     info = pd.read_csv('info.csv')
@@ -13,23 +14,16 @@ def main():
         if not info.loc[i, 'is_target']:
             continue
 
+        handle = info.loc[i, 'handle']
         last_date = info.loc[i, 'last_date']
-        if not last_date:
-            last_date = '2023-07-04'
+        if pd.isnull(last_date):
+            last_date = START_DATE
         
-        weeks_passed = (pd.to_datetime(datetime.date.today()) - pd.to_datetime(last_date)).days // 7
+        weeks_passed = (pd.to_datetime(TODAY) - pd.to_datetime(last_date)).days // 7
+        bag.append(handle * weeks_passed)
 
-        today = datetime.date.today()
-        print(today)
-
-        
     
-    for i in range(len(info)):
-        last_date = info.loc[i, 'last_date']
-        if not last_date:
-            pass
 
-
-
+    
 if __name__ == '__main__':
     main()
