@@ -1,7 +1,7 @@
 import pandas as pd
-import numpy as np
 import datetime
 import random
+import time
 
 TODAY = datetime.date.today()
 START_DATE = '2023-07-04'
@@ -28,7 +28,16 @@ def main():
 
     random.shuffle(bag)
     random_pick = random.choice(bag)
-    print("Next setter:", random_pick)
+    
+    # Hold on for a while for dramatic effect XD
+    for i in range(2):
+        time.sleep(0.8)
+        print('.')
+    time.sleep(2)
+    
+    # print result
+    print("Next setter:", random_pick, '\U0001F389')
+    time.sleep(1)
 
     
 if __name__ == '__main__':
