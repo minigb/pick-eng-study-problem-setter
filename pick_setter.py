@@ -22,11 +22,11 @@ def main():
             last_date = START_DATE
         
         weeks_passed = (pd.to_datetime(TODAY) - pd.to_datetime(last_date)).days // 7
-        bag.append(handle * weeks_passed)
+        bag.extend([handle] * weeks_passed)
 
     if len(bag) == 0:
         bag = list(info['handle'])
-        
+
     random.shuffle(bag)
     random_pick = random.choice(bag)
     print("Next setter:", random_pick)
