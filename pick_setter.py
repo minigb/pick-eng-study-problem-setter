@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
 import datetime
+import random
 
 
 TODAY = datetime.date.today()
 START_DATE = '2023-07-04'
+
 
 def main():
     info = pd.read_csv('info.csv')
@@ -22,7 +24,12 @@ def main():
         weeks_passed = (pd.to_datetime(TODAY) - pd.to_datetime(last_date)).days // 7
         bag.append(handle * weeks_passed)
 
-    
+    if len(bag) == 0:
+        bag = list(info['handle'])
+        
+    random.shuffle(bag)
+    random_pick = random.choice(bag)
+    print("Next setter:", random_pick)
 
     
 if __name__ == '__main__':
