@@ -9,12 +9,17 @@ START_DATE = '2023-07-04'
 
 def main():
     info = pd.read_csv('info.csv')
+    if not info['is_target'].any():
+        info.loc[info['is_in_army'] == False, 'is_target'] = True
+
+    print('Targets: ', list(info[info['is_target']]['id']))
 
     bag = []
     for i in range(len(info)):
         if not info.loc[i, 'is_target']:
             continue
-
+        assert info.loc[i, 'is_in_army'] == False
+        
         id = info.loc[i, 'id']
         last_date = info.loc[i, 'last_date']
         if pd.isnull(last_date):
