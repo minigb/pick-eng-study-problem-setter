@@ -20,8 +20,12 @@ def read_info(file_name):
 
 def main():
     info = read_info('info.json')
-    info['is_target'] = info['is_target'].fillna(False)
-    info['last_date'] = info['last_date'].fillna(TODAY)
+    
+    # Fill missing values
+    info.loc[info['last_date'].isnull(), 'last_date'] = START_DATE
+    assert not info.isnull().values.any()
+
+    # If no target, set all non-army members as target
     if not info['is_target'].any():
         info.loc[info['is_in_army'] == False, 'is_target'] = True
 
@@ -29,17 +33,16 @@ def main():
 
     bag = []
     for i in range(len(info)):
+        # Check if the person is a target
         if not info.loc[i, 'is_target']:
             continue
         assert info.loc[i, 'is_in_army'] == False
-        
+
+        # Put the person in the bag with the weight of weeks passed
         id = info.loc[i, 'id']
         last_date = info.loc[i, 'last_date']
         weeks_passed = (pd.to_datetime(TODAY) - pd.to_datetime(last_date)).days // 7
         bag.extend([id] * weeks_passed)
-
-    if len(bag) == 0:
-        bag = list(info['id'])
 
     random.shuffle(bag)
     random_pick = random.choice(bag)
