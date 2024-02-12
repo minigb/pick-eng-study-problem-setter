@@ -1,14 +1,27 @@
 import pandas as pd
+import json
 import datetime
 import random
 import time
+import numpy as np
 
 TODAY = datetime.date.today()
 START_DATE = '2023-07-04'
 
 
+def read_info(file_name):
+    if file_name.endswith('.csv'):
+        return pd.read_csv(file_name)
+    elif file_name.endswith('.json'):
+        with open(file_name) as f:
+            info = json.load(f)
+            return pd.DataFrame.from_dict(info)
+
+
 def main():
-    info = pd.read_csv('info.csv')
+    info = read_info('info.json')
+    info['is_target'] = info['is_target'].fillna(False)
+    info['last_date'] = info['last_date'].fillna(TODAY)
     if not info['is_target'].any():
         info.loc[info['is_in_army'] == False, 'is_target'] = True
 
@@ -22,9 +35,6 @@ def main():
         
         id = info.loc[i, 'id']
         last_date = info.loc[i, 'last_date']
-        if pd.isnull(last_date):
-            last_date = START_DATE
-        
         weeks_passed = (pd.to_datetime(TODAY) - pd.to_datetime(last_date)).days // 7
         bag.extend([id] * weeks_passed)
 
