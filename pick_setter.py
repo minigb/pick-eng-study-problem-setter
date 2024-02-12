@@ -21,11 +21,11 @@ def read_info(file_name):
 def main():
     info = read_info('info.json')
     
-    # Fill missing values
+    # Fill in the start date for those who don't have it
     info.loc[info['last_date'].isnull(), 'last_date'] = START_DATE
     assert not info.isnull().values.any()
 
-    # If no target, set all non-army members as target
+    # If there's no target, set all non-army members as target
     if not info['is_target'].any():
         info.loc[info['is_in_army'] == False, 'is_target'] = True
 
