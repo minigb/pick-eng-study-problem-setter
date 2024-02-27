@@ -29,6 +29,9 @@ def main():
     info.loc[info['is_in_army'], 'is_target'] = False
     # Check if there's any missing value
     assert not info.isnull().values.any()
+    # Check if last week's setter is updated
+    last_week_date = (TODAY - datetime.timedelta(days=7)).strftime('%Y-%m-%d')
+    assert last_week_date in set(info['last_date'])
 
     # If there's no target, set all non-army members as target
     if not info['is_target'].any():
