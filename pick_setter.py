@@ -23,6 +23,11 @@ def main():
     
     # Fill in the start date for those who don't have it
     info.loc[info['last_date'].isnull(), 'last_date'] = START_DATE
+    # Fill in 'is_in_army' for those who don't have it
+    info.loc[info['is_in_army'].isnull(), 'is_in_army'] = False
+    # Fill in 'is_target' for those with 'is_in_army' as True
+    info.loc[info['is_in_army'], 'is_target'] = False
+    # Check if there's any missing value
     assert not info.isnull().values.any()
 
     # If there's no target, set all non-army members as target
