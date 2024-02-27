@@ -3,7 +3,6 @@ import json
 import datetime
 import random
 import time
-import numpy as np
 
 TODAY = datetime.date.today()
 START_DATE = '2023-07-04'
@@ -16,11 +15,9 @@ def read_info(file_name):
         with open(file_name) as f:
             info = json.load(f)
             return pd.DataFrame.from_dict(info)
+        
 
-
-def main():
-    info = read_info('info.json')
-    
+def refine_data(info):
     # Fill in the start date for those who don't have it
     info.loc[info['last_date'].isnull(), 'last_date'] = START_DATE
     # Fill in 'is_in_army' for those who don't have it
@@ -37,8 +34,10 @@ def main():
     if not info['is_target'].any():
         info.loc[info['is_in_army'] == False, 'is_target'] = True
 
-    print('Targets: ', list(info[info['is_target']]['id']))
+    return info
 
+
+def pick_setter(info):
     bag = []
     for i in range(len(info)):
         # Check if the person is a target
@@ -54,17 +53,22 @@ def main():
 
     random.shuffle(bag)
     random_pick = random.choice(bag)
-    
-    # Hold on for a while for suspense XD
-    for i in range(2):
+
+    return random_pick
+
+
+def give_suspense():
+    for _ in range(2):
         time.sleep(0.8)
         print('.')
     time.sleep(2)
-    
-    # Print result
-    print("Next setter:", random_pick, '\U0001F389') # print with emoji
-    time.sleep(1)
 
-    
+
 if __name__ == '__main__':
-    main()
+    info = read_info('info.json')
+    info = refine_data(info)
+    print('Targets: ', list(info[info['is_target']]['id']))
+
+    setter = pick_setter(info)
+    give_suspense()
+    print("Next setter:", setter, '\U0001F389') # print with emoji
