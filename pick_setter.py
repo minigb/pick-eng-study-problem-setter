@@ -29,8 +29,8 @@ def refine_data(info):
     # Check if last week's setter is updated
     last_week_date = (TODAY - datetime.timedelta(days=7)).strftime('%Y-%m-%d')
     assert last_week_date in set(info['last_date'])
-    # Check if every value in info['last_date'] is later than START_DATE
-    assert all(info['last_date'] > START_DATE)
+    # Check if every value in info['last_date'] is later than or the same as START_DATE
+    assert all(info['last_date'] >= START_DATE)
 
     # If there's no target, set all non-army members as target
     if not info['is_target'].any():
