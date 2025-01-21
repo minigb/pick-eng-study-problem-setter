@@ -1,3 +1,4 @@
+from collections import Counter
 import pandas as pd
 import json
 import datetime
@@ -38,8 +39,11 @@ def refine_data(info):
 
     return info
 
+def print_bag_info(bag):
+    print('Bag Length:', len(bag))
+    print('Bag Counter:', Counter(bag))
 
-def pick_setter(info):
+def pick_setter(info, do_print=True):
     bag = []
     for i in range(len(info)):
         # Check if the person is a target
@@ -51,13 +55,15 @@ def pick_setter(info):
         id = info.loc[i, 'id']
         last_date = info.loc[i, 'last_date']
         weeks_passed = (pd.to_datetime(TODAY) - pd.to_datetime(last_date)).days // 7
-        bag.extend([id] * weeks_passed)
+        bag.extend([id] * (weeks_passed ** 2))
+    if do_print:
+        print_bag_info(bag)
 
+    random.seed(time.time())
     random.shuffle(bag)
     random_pick = random.choice(bag)
 
     return random_pick
-
 
 def give_suspense():
     for _ in range(2):
@@ -65,12 +71,9 @@ def give_suspense():
         print('.')
     time.sleep(2)
 
-
 if __name__ == '__main__':
     info = read_info('info.json')
     info = refine_data(info)
-    print('Targets: ', list(info[info['is_target']]['id']))
-
     setter = pick_setter(info)
     give_suspense()
     print("Next setter:", setter, '\U0001F389') # print with emoji
