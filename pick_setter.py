@@ -40,8 +40,12 @@ def refine_data(info):
     return info
 
 def print_bag_info(bag):
-    print('Bag Length:', len(bag))
-    print('Bag Counter:', Counter(bag))
+    counter = Counter(bag)
+    print('Number of Targets:', len(counter))
+    print('-' * 5)
+    sorted_counter = dict(sorted(counter.items(), key=lambda item: item[1], reverse=True))
+    for key, value in sorted_counter.items():
+        print(f'{key}:\t{value}')
 
 def pick_setter(info, do_print=True):
     bag = []
