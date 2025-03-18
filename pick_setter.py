@@ -41,7 +41,7 @@ def refine_data(info):
 
 def print_bag_info(bag):
     counter = Counter(bag)
-    print('Number of Targets:', len(counter))
+    print('Number of Targets:', len(counter), "(excluded this week's setter)")
     print('-' * 5)
     sorted_counter = dict(sorted(counter.items(), key=lambda item: item[1], reverse=True))
     for key, value in sorted_counter.items():
